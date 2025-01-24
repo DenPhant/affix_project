@@ -1,0 +1,48 @@
+{
+    "env": {
+        "setup": {
+            "complete": true
+        }
+    },
+    "dependencies": [
+        "tensorflow",
+        "keras-cv",
+        "tqdm",
+        "opencv-python",
+        "numpy",
+        "matplotlib",
+        "python-dotenv",
+        "scikit-image",
+        "roboflow",
+        "yolo",
+        "ultralytics"
+    ],
+    "object_types": [
+        "REFLECTIVE",
+        "TRANSPARENT",
+        "DARK",
+        "CASUAL"
+    ],
+    "surface_types": [
+        "BIN",
+        "PALLET",
+        "DARK",
+        "WHITE"
+    ],
+    "models": [
+      {
+        "name": "YOLO", 
+        "description": "YOLO, which stands for You Only Look Once, is a family of computer vision models designed for real-time object detection. Introduced in 2016 by Joseph Redmon, Santosh Divvala, Ross Girshick, and Ali Farhadi, YOLO models are known for their speed and accuracy. These models predict the position of bounding boxes and classification probabilities for objects in an image in a single pass, making them efficient for real-time applications. This models verion is YOLOv11"
+      },
+      {
+        "name": "Segment by lightening", 
+        "description": "One of the traditional algorithm methods to segment objects. This approach uses Morphology and Thresholding that brightens the objects making them more recognisable."
+      },
+      {
+        "name": "Segment by darkening", 
+        "description": "One of the traditional algorithm methods to segment objects. This approach uses Morphology and Thresholding that darkens the objects making them more recognisable."
+      }
+    ],
+    "input_folders": [],
+    "output_folder": []
+}
