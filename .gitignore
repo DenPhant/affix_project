@@ -1,6 +1,9 @@
 #Custom gitignore file for python projects
 
 models/yolo/runs
+INPUT
+OUTPUT
+DEMO
 
 #Default built in files to ignore
 # Byte-compiled / optimized / DLL files

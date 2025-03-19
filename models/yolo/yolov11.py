@@ -38,12 +38,21 @@ class YOLOv11:
       for result in results:
         try:
           #Other available attributes: boxes, masks, keypoints, probs, obb
-          boxes = result.boxes  # Boxes object for bounding box outputs
-          masks = result.masks  # Masks object for segmentation masks outputs
-          keypoints = result.keypoints  # Keypoints object for pose outputs
-          probs = result.probs  # Probs object for classification outputs
-          obb = result.obb  # Oriented boxes object for OBB outputs
+          boxes = result.boxes  #Boxes object for bounding box outputs
+          masks = result.masks  #Masks object for segmentation masks outputs
+          keypoints = result.keypoints  #Keypoints object for pose outputs
+          probs = result.probs  #Probs object for classification outputs
+          obb = result.obb  #Oriented boxes object for OBB outputs
+          masks = result.masks  #Segmentation masks object for instance segmentation outputs
+          img = result.orig_img
 
+          if masks is not None:
+            try:
+              for mask in masks:
+                #print(mask)
+                i = 1
+            except Exception as e:
+              print(f"Error processing mask: {e}")
           result.save(output_path)  
           end_time = time.time()
           processing_time = end_time - start_time

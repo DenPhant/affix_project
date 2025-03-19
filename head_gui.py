@@ -9,7 +9,11 @@ from utils.select_folder import FolderSelector
 from utils.image_processor import ImageProcessor
 from utils.image_fullscreen import FullScreenViewer
 from utils.select_model import ModelSelectionDialog
+from utils.select_camera import CameraSelector
+from utils.mechmind_connection import MechmindConnection
 
+import time
+import cv2
 #General UI, with more than 600 lines of code,
 #A lot of code went to just add widgets to layouts, styling them and saparation by empty lines
 #It can be confusing, especially with picture updating, 
@@ -27,6 +31,9 @@ class GeneralWindow(QMainWindow):
     self.output_pics = []
     self.max_index = 0
 
+    #Work mode - get images from folder (0) or from camera (1) default - 0
+    self.work_mode = 0
+
     #Main Layout
     main_layout = QGridLayout()
 
@@ -36,6 +43,9 @@ class GeneralWindow(QMainWindow):
     self.current_index = -1
     self.output_folder = ""
     self.model = ""
+    self.connection = None
+    self.camera_info = ""
+    self.camera = None
     self.processing_times = []
 
     #Pic Boxes
@@ -305,6 +315,8 @@ class GeneralWindow(QMainWindow):
     self.model_label = QLabel("Model: Not selected")
     self.model_label.setFont(font)
     self.model_label.setStyleSheet("color: #333333;")
+    
+    
 
     #Model Selection Button
     self.change_model_btn = QPushButton("Select Model")
@@ -322,8 +334,28 @@ class GeneralWindow(QMainWindow):
       }
     """)
 
+    self.camera_label = QLabel("Camera: Not selected")
+    self.camera_label.setFont(font)
+    self.camera_label.setStyleSheet("color: #333333;")
+  
+    self.camera_btn = QPushButton("Select Camera")
+    self.camera_btn.clicked.connect(self.open_camera_dialog)
+    self.camera_btn.setStyleSheet(
+      """
+      QPushButton {
+        background-color: #1b8a99;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+      QPushButton:hover {
+        background-color: #166f7a;
+      }
+    """)
+
     #Add the widgets to the layout and keep them "fancyyy"
-    for widget in [self.input_folder_btn, self.output_folder_btn, self.output_folder_label, self.model_label, self.change_model_btn]:
+    for widget in [self.input_folder_btn, self.output_folder_btn, self.output_folder_label, self.model_label, self.change_model_btn, self.camera_label, self.camera_btn]:
       scroll_layout.addWidget(widget)
 
     self.scroll_area = QScrollArea()
@@ -443,6 +475,31 @@ class GeneralWindow(QMainWindow):
     central_widget.setLayout(main_layout)
     self.setCentralWidget(central_widget)
 
+  def open_camera_dialog(self):
+    try:
+      self.connection = MechmindConnection()
+      cameras = self.connection.find_cameras()
+
+    except Exception as e:
+      QMessageBox.critical(self, "Error", f"Failed to perform this operation: {e}")
+      return
+    
+    if not cameras:
+      QMessageBox.warning(self, "No Cameras", "No cameras found.")
+      return
+
+    dialog = CameraSelector(cameras, self) 
+    selected_camera = None  
+    if dialog.exec_() == QDialog.Accepted:
+      selected_camera = dialog.get_selected_camera()
+      QMessageBox.information(self, "Selected Camera", f"You selected: {selected_camera}")
+      self.work_mode = 1
+      self.camera_label.setText(f"Camera: {selected_camera.model}")
+
+    if selected_camera:
+      self.camera_info = selected_camera
+      self.camera = self.connection.connect(self.camera_info)
+    
 
   def open_model_dialog(self):
     try:
@@ -529,59 +586,110 @@ class GeneralWindow(QMainWindow):
 
 
   def start_processing(self):
-    if not self.input_folders:
-      warning = QMessageBox()
-      warning.setStyleSheet("background-color: white;")
-      warning.warning(None, "Error", "Please select at least one input folder.")
-      return
-    if not self.output_folder:
-      warning = QMessageBox()
-      warning.setStyleSheet("background-color: white;")
-      QMessageBox.warning(None, "Error", "Please select an output folder.")
-      return
-    if not self.model:
-      warning = QMessageBox()
-      warning.setStyleSheet("background-color: white;")
-      QMessageBox.warning(None, "Error", "Please select a model.")
-      return
-    if not self.pictures:
-      warning = QMessageBox()
-      warning.setStyleSheet("background-color: white;")
-      QMessageBox.warning(None, "Error", "No pictures to process.")
-      return
+    if self.work_mode == 0:
+      if not self.input_folders:
+        warning = QMessageBox()
+        warning.setStyleSheet("background-color: white;")
+        warning.warning(None, "Error", "Please select at least one input folder.")
+        return
+      if not self.output_folder:
+        warning = QMessageBox()
+        warning.setStyleSheet("background-color: white;")
+        QMessageBox.warning(None, "Error", "Please select an output folder.")
+        return
+      if not self.model:
+        warning = QMessageBox()
+        warning.setStyleSheet("background-color: white;")
+        QMessageBox.warning(None, "Error", "Please select a model.")
+        return
+      if not self.pictures:
+        warning = QMessageBox()
+        warning.setStyleSheet("background-color: white;")
+        QMessageBox.warning(None, "Error", "No pictures to process.")
+        return
+      for index, original_path in enumerate(self.pictures):
+        output_path = os.path.join(self.output_folder, f"processed_{index}.png")
+        match self.model:
+          case "YOLO":
+            proc_time = YOLOv11.yolo_detect(original_path, output_path)
+            self.processing_times.insert(self.current_index, proc_time)
+            self.picture_time.setText(f"{self.processing_times[self.current_index]:.2f} s")
+          case "Segment by lightening":
+            proc_time = ImageProcessor.segment_by_lightening(original_path, output_path)
+            self.processing_times.insert(self.current_index, proc_time)
+            self.picture_time.setText(f"{self.processing_times[self.current_index]:.2f} s")
+          case "Segment by darkening":
+            proc_time = ImageProcessor.segment_by_darkening(original_path, output_path)
+            self.processing_times.insert(self.current_index, proc_time)
+            self.picture_time.setText(f"{self.processing_times[self.current_index]:.2f} s")
+          case _:
+            proc_time = ImageProcessor.convert_to_negative(original_path, output_path)
+            self.processing_times.insert(self.current_index, proc_time)
+            self.picture_time.setText(f"{self.processing_times[self.current_index]:.2f} s")
+        #Update the picture boxes during processing
+        self.input_pics.append(original_path)
+        self.pic1.setPixmap(QPixmap(original_path).scaled(self.pic1.size(), aspectRatioMode=1))
+        self.output_pics.append(output_path)
+        self.pic2.setPixmap(QPixmap(output_path).scaled(self.pic2.size(), aspectRatioMode=1))
+        self.picture_status.setText(f"{index + 1} / {len(self.pictures)}")
+        self.current_index = index
 
-    for index, original_path in enumerate(self.pictures):
-      output_path = os.path.join(self.output_folder, f"processed_{index}.png")
-      match self.model:
-        case "YOLO":
-          time = YOLOv11.yolo_detect(original_path, output_path)
-          self.processing_times.insert(self.current_index, time)
-          self.picture_time.setText(f"{self.processing_times[self.current_index]:.2f} s")
-        case "Segment by lightening":
-          time = ImageProcessor.segment_by_lightening(original_path, output_path)
-          self.processing_times.insert(self.current_index, time)
-          self.picture_time.setText(f"{self.processing_times[self.current_index]:.2f} s")
-        case "Segment by darkening":
-          time = ImageProcessor.segment_by_darkening(original_path, output_path)
-          self.processing_times.insert(self.current_index, time)
-          self.picture_time.setText(f"{self.processing_times[self.current_index]:.2f} s")
-        case _:
-          time = ImageProcessor.convert_to_negative(original_path, output_path)
-          self.processing_times.insert(self.current_index, time)
-          self.picture_time.setText(f"{self.processing_times[self.current_index]:.2f} s")
+        #Allow the UI to update
+        QApplication.processEvents()
+        QMessageBox.information(self, "Success", f"All {len(self.pictures)} pictures have been processed and saved.")
 
-      #Update the picture boxes during processing
-      self.input_pics.append(original_path)
-      self.pic1.setPixmap(QPixmap(original_path).scaled(self.pic1.size(), aspectRatioMode=1))
-      self.output_pics.append(output_path)
-      self.pic2.setPixmap(QPixmap(output_path).scaled(self.pic2.size(), aspectRatioMode=1))
-      self.picture_status.setText(f"{index + 1} / {len(self.pictures)}")
-      self.current_index = index
+    elif self.work_mode == 1:
+      if not self.camera:
+        warning = QMessageBox()
+        warning.setStyleSheet("background-color: white;")
+        QMessageBox.warning(None, "Error", "Please select a camera.")
+        return
+      total_index = 0
+      self.current_index = 0
+      self.input_folder = "C:/Users/ivano/Desktop/uni/uni/Semester_7/industry/affix_project/INPUT/"
+      while self.current_index < 100:
+        flow_time_start = time.time()
+        input_path = os.path.join(self.input_folder, f"image{self.current_index}.png")
+        self.connection.get_2d_image(self.camera, input_path)
+        image = cv2.imread(input_path)
+        if image is None:
+          print("No Image")
+          return
+        output_path = os.path.join(self.output_folder, f"processed_{self.current_index}.png")
+        match self.model:
+          case "YOLO":
+            YOLOv11.yolo_detect(input_path, output_path)
+            
+          case "Segment by lightening":
+            ImageProcessor.segment_by_lightening(input_path, output_path)
+            
+          case "Segment by darkening":
+            ImageProcessor.segment_by_darkening(input_path, output_path)
+            
+          case _:
+            ImageProcessor.convert_to_negative(input_path, output_path)
 
-      #Allow the UI to update
-      QApplication.processEvents()
-    QMessageBox.information(self, "Success", f"All {len(self.pictures)} pictures have been processed and saved.")
+        flow_time_end = time.time()
+        flow_time_final = flow_time_end - flow_time_start
+        self.processing_times.insert(self.current_index, flow_time_final)
+        self.picture_time.setText(f"{self.processing_times[self.current_index]:.2f} s")
+        #Update the picture boxes during processing
+        self.input_pics.append(input_path)
+        self.pic1.setPixmap(QPixmap(input_path).scaled(self.pic1.size(), aspectRatioMode=1))
+        self.output_pics.append(output_path)
+        self.pic2.setPixmap(QPixmap(output_path).scaled(self.pic2.size(), aspectRatioMode=1))
+        total_index += 1
+        self.picture_status.setText(f"{self.current_index + 1} / {total_index}")
+        
+        self.current_index += 1
+        
+        QApplication.processEvents()
+      self.input_folders.append(self.input_folder)
+      self.load_pictures()
+      QMessageBox.information(self, "Success", f"All {total_index} pictures have been processed and saved.")
 
+      
+    
 
 
   def show_prev_picture(self):
