@@ -36,7 +36,7 @@ class ImageProcessor:
         image = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
         if image is None:
           raise ValueError(f"Invalid image path: {input_path}")
-        cropped_image = image[500:900, 650:1300]
+        cropped_image = image[200:1100, 350:1500]
         adjusted_image = cv2.convertScaleAbs(cropped_image, alpha=3, beta=20)
 
         #Apply Otsu's thresholding
@@ -88,7 +88,7 @@ class ImageProcessor:
         image = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
         if image is None:
           raise ValueError(f"Invalid image path: {input_path}")
-        cropped_image = image[500:900, 650:1300]
+        cropped_image = image[300:950, 250:1050]
         adjusted_image = cv2.convertScaleAbs(cropped_image, alpha=3, beta=20)
 
         #Apply Otsu's thresholding

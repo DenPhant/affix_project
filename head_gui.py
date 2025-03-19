@@ -636,7 +636,8 @@ class GeneralWindow(QMainWindow):
 
         #Allow the UI to update
         QApplication.processEvents()
-        QMessageBox.information(self, "Success", f"All {len(self.pictures)} pictures have been processed and saved.")
+        time.sleep(0.5)
+      QMessageBox.information(self, "Success", f"All {len(self.pictures)} pictures have been processed and saved.")
 
     elif self.work_mode == 1:
       if not self.camera:
@@ -681,13 +682,10 @@ class GeneralWindow(QMainWindow):
         self.current_index += 1
         
         QApplication.processEvents()
+      self.connection.disconnect(self.camera)
       self.input_folders.append(self.input_folder)
       self.load_pictures()
       QMessageBox.information(self, "Success", f"All {total_index} pictures have been processed and saved.")
-
-      
-    
-
 
   def show_prev_picture(self):
     if self.current_index > 0:
@@ -696,8 +694,6 @@ class GeneralWindow(QMainWindow):
     elif self.current_index == 0:
       self.current_index = self.max_index
       self.update_picture_boxes()
-
-
 
   def show_next_picture(self):
     if self.current_index < len(self.pictures) - 1:

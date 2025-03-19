@@ -92,7 +92,7 @@ class MechmindConnection:
       if error.error_code != 0:
         print(error.error_code)
         print("Failed to get user sets")
-        #return
+        return
       #Print sets to know how do they look
       for user_set in user_sets:
         print(user_set)
