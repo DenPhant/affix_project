@@ -646,6 +646,7 @@ class GeneralWindow(QMainWindow):
         return
       total_index = 0
       self.current_index = 0
+      #Hardcoded input folder for testing
       self.input_folder = "C:/Users/ivano/Desktop/uni/uni/Semester_7/industry/affix_project/INPUT/"
       while self.current_index < 100:
         flow_time_start = time.time()
@@ -659,16 +660,12 @@ class GeneralWindow(QMainWindow):
         match self.model:
           case "YOLO":
             YOLOv11.yolo_detect(input_path, output_path)
-            
           case "Segment by lightening":
             ImageProcessor.segment_by_lightening(input_path, output_path)
-            
           case "Segment by darkening":
             ImageProcessor.segment_by_darkening(input_path, output_path)
-            
           case _:
             ImageProcessor.convert_to_negative(input_path, output_path)
-
         flow_time_end = time.time()
         flow_time_final = flow_time_end - flow_time_start
         self.processing_times.insert(self.current_index, flow_time_final)
