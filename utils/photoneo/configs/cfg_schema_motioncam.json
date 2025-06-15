@@ -1,0 +1,445 @@
+{
+  "General": {
+    "PhotoneoTriggerMode": {
+      "type": "enum",
+      "options": [
+        "Software",
+        "Freerun"
+      ]
+    },
+    "WaitForGrabbingEnd": {
+      "type": "bool"
+    },
+    "GetFrameTimeout": {
+      "type": "int",
+      "min": -1,
+      "max": 9223372036854776000
+    },
+    "LogoutAfterDisconnect": {
+      "type": "bool"
+    },
+    "StopAcquisitionAfterDisconnect": {
+      "type": "bool"
+    }
+  },
+  "Capturing": {
+    "ShutterMultiplier": {
+      "type": "int",
+      "min": 1,
+      "max": 20
+    },
+    "ScanMultiplier": {
+      "type": "int",
+      "min": 1,
+      "max": 20
+    },
+    "CodingStrategy": {
+      "type": "enum",
+      "values": [
+        "Normal",
+        "Interreflections",
+        "HighFrequency"
+      ]
+    },
+    "CodingQuality": {
+      "type": "enum",
+      "values": [
+        "Fast",
+        "High",
+        "Ultra"
+      ]
+    },
+    "TextureSource": {
+      "type": "enum",
+      "values": [
+        "Computed",
+        "LED",
+        "Laser",
+        "Focus"
+      ]
+    },
+    "SinglePatternExposure": {
+      "type": "float",
+      "min": 10.24,
+      "max": 40.96
+    },
+    "MaximumFPS": {
+      "type": "float",
+      "min": 0,
+      "max": 100
+    },
+    "LaserPower": {
+      "type": "int",
+      "min": 1,
+      "max": 4095
+    },
+    "LEDPower": {
+      "type": "int",
+      "min": 1,
+      "max": 4095
+    },
+    "HardwareTrigger": {
+      "type": "bool"
+    },
+    "HardwareTriggerSignal": {
+      "type": "enum",
+      "values": [
+        "Falling",
+        "Rising",
+        "Both"
+      ]
+    },
+    "OperationMode": {
+      "type": "enum",
+      "values": [
+        "CameraMode",
+        "ScannerMode",
+        "Mode2D"
+      ]
+    },
+    "CameraExposure": {
+      "type": "float",
+      "min": 10.24,
+      "max": 40.96
+    },
+    "SamplingTopology": {
+      "type": "enum",
+      "values": [
+        "Standard"
+      ]
+    },
+    "OutputTopology": {
+      "type": "enum",
+      "values": [
+        "IrregularGrid",
+        "RegularGrid",
+        "Raw"
+      ]
+    },
+    "CameraCodingStrategy": {
+      "type": "enum",
+      "values": [
+        "Normal",
+        "Interreflections",
+        "HighFrequency",
+        "Sparse"
+      ]
+    },
+    "CameraTextureSource": {
+      "type": "enum",
+      "values": [
+        "Laser",
+        "LED",
+        "Color"
+      ]
+    }
+  },
+  "Processing": {
+    "MaxInaccuracy": {
+      "type": "float",
+      "min": 0,
+      "max": 100
+    },
+    "CameraSpaceSelector": {
+      "type": "enum",
+      "values": [
+        "MinX",
+        "MinY",
+        "MinZ",
+        "MaxX",
+        "MaxY",
+        "MaxZ"
+      ]
+    },
+    "CameraSpaceValue": {
+      "type": "float",
+      "min": -999999,
+      "max": 999999
+    },
+    "PointCloudSpaceSelector": {
+      "type": "enum",
+      "values": [
+        "MinX",
+        "MinY",
+        "MinZ",
+        "MaxX",
+        "MaxY",
+        "MaxZ"
+      ]
+    },
+    "PointCloudSpaceValue": {
+      "type": "float",
+      "min": -999999,
+      "max": 999999
+    },
+    "MaxCameraAngle": {
+      "type": "float",
+      "min": 0,
+      "max": 90
+    },
+    "MaxProjectorAngle": {
+      "type": "float",
+      "min": 0,
+      "max": 90
+    },
+    "MinHalfwayAngle": {
+      "type": "float",
+      "min": 0,
+      "max": 90
+    },
+    "MaxHalfwayAngle": {
+      "type": "float",
+      "min": 0,
+      "max": 90
+    },
+    "CalibrationVolumeOnly": {
+      "type": "bool"
+    },
+    "SurfaceSmoothness": {
+      "type": "enum",
+      "values": [
+        "Sharp",
+        "Normal",
+        "Smooth"
+      ]
+    },
+    "NormalsEstimationRadius": {
+      "type": "int",
+      "min": 0,
+      "max": 4
+    },
+    "PatternCodeCorrection": {
+      "type": "enum",
+      "values": [
+        "Off",
+        "Medium",
+        "Strong"
+      ]
+    },
+    "GlareCompensation": {
+      "type": "bool"
+    },
+    "HoleFilling": {
+      "type": "enum",
+      "values": [
+        "Off",
+        "Medium"
+      ]
+    }
+  },
+  "Coordinates": {
+    "CoordinateSpace": {
+      "type": "enum",
+      "values": [
+        "CameraSpace",
+        "MarkerSpace",
+        "RobotSpace",
+        "CustomSpace",
+        "PrimaryCameraSpace"
+      ]
+    },
+    "TransformationSpaceSelector": {
+      "type": "enum",
+      "values": [
+        "Custom",
+        "Robot"
+      ]
+    },
+    "TransformationRotationMatrixSelector": {
+      "type": "enum",
+      "values": [
+        "Row0Col0",
+        "Row0Col1",
+        "Row0Col2",
+        "Row1Col0",
+        "Row1Col1",
+        "Row1Col2",
+        "Row2Col0",
+        "Row2Col1",
+        "Row2Col2"
+      ]
+    },
+    "TransformationRotationMatrixValue": {
+      "type": "float",
+      "min": -999999,
+      "max": 999999
+    },
+    "TransformationTranslationVectorSelector": {
+      "type": "enum",
+      "values": [
+        "X",
+        "Y",
+        "Z"
+      ]
+    },
+    "TransformationTranslationVectorValue": {
+      "type": "float",
+      "min": -999999,
+      "max": 999999
+    },
+    "RecognizeMarkers": {
+      "type": "bool"
+    },
+    "MarkerScaleWidth": {
+      "type": "float",
+      "min": -999999,
+      "max": 999999
+    },
+    "MarkerScaleHeight": {
+      "type": "float",
+      "min": -999999,
+      "max": 999999
+    },
+    "SaveTransformations": {
+      "type": "bool"
+    },
+    "CameraSpace": {
+      "type": "enum",
+      "values": [
+        "PrimaryCamera",
+        "ColorCamera"
+      ]
+    }
+  },
+  "Calibration": {
+    "ColorCalibration_CameraMatrixSelector": {
+      "type": "enum",
+      "values": [
+        "Row0Col0",
+        "Row0Col1",
+        "Row0Col2",
+        "Row1Col0",
+        "Row1Col1",
+        "Row1Col2",
+        "Row2Col0",
+        "Row2Col1",
+        "Row2Col2"
+      ]
+    },
+    "ColorCalibration_DistortionCoefficientSelector": {
+      "type": "int",
+      "min": 0,
+      "max": 13
+    },
+    "ColorCalibration_FocusLength": {
+      "type": "float"
+    },
+    "ColorCalibration_PixelSizeWidth": {
+      "type": "float"
+    },
+    "ColorCalibration_PixelSizeHeight": {
+      "type": "float"
+    }
+  },
+  "ColorCalibration": {
+    "ColorCalibration_CameraMatrixSelector": {
+      "type": "enum",
+      "values": [
+        "Row0Col0",
+        "Row0Col1",
+        "Row0Col2",
+        "Row1Col0",
+        "Row1Col1",
+        "Row1Col2",
+        "Row2Col0",
+        "Row2Col1",
+        "Row2Col2"
+      ]
+    },
+    "ColorCalibration_DistortionCoefficientSelector": {
+      "type": "int",
+      "min": 0,
+      "max": 13
+    },
+    "ColorCalibration_FocusLength": {
+      "type": "float"
+    },
+    "ColorCalibration_PixelSizeWidth": {
+      "type": "float"
+    },
+    "ColorCalibration_PixelSizeHeight": {
+      "type": "float"
+    },
+    "ColorCalibration_RotationMatrixSelector": {
+      "type": "enum",
+      "values": [
+        "Row0Col0",
+        "Row0Col1",
+        "Row0Col2",
+        "Row1Col0",
+        "Row1Col1",
+        "Row1Col2",
+        "Row2Col0",
+        "Row2Col1",
+        "Row2Col2"
+      ]
+    },
+    "ColorCalibration_TranslationVectorSelector": {
+      "type": "enum",
+      "values": [
+        "X",
+        "Y",
+        "Z"
+      ]
+    }
+  },
+  "ColorSettings": {
+    "ColorSettings_Resolution": {
+      "type": "enum",
+      "values": [
+        "Res_3864_2192",
+        "Res_1932_1096",
+        "Res_1288_730"
+      ]
+    },
+    "ColorSettings_Gamma": {
+      "type": "float",
+      "min": 0,
+      "max": 1
+    },
+    "ColorSettings_WhiteBalanceEnabled": {
+      "type": "bool"
+    },
+    "ColorSettings_WhiteBalanceR": {
+      "type": "float",
+      "min": 0,
+      "max": 1
+    },
+    "ColorSettings_WhiteBalanceG": {
+      "type": "float",
+      "min": 0,
+      "max": 1
+    },
+    "ColorSettings_WhiteBalanceB": {
+      "type": "float",
+      "min": 0,
+      "max": 1
+    },
+    "ColorSettings_RemoveFalseColors": {
+      "type": "bool"
+    }
+  },
+  "FrameOutput": {
+    "SendPointCloud": {
+      "type": "bool"
+    },
+    "SendNormalMap": {
+      "type": "bool"
+    },
+    "SendDepthMap": {
+      "type": "bool"
+    },
+    "SendConfidenceMap": {
+      "type": "bool"
+    },
+    "SendEventMap": {
+      "type": "bool"
+    },
+    "SendTexture": {
+      "type": "bool"
+    },
+    "SendColorCameraImage": {
+      "type": "bool"
+    }
+  }
+}

@@ -49,7 +49,6 @@ class YOLOv11:
           if masks is not None:
             try:
               for mask in masks:
-                #print(mask)
                 i = 1
             except Exception as e:
               print(f"Error processing mask: {e}")
@@ -62,11 +61,6 @@ class YOLOv11:
           break
     except Exception as e:
       #The issue might be because of CUDA version mismatch
-      print(f"PyTorch version: {torch.__version__}")
-      print(f"torchvision version: {torchvision.__version__}")
-      print("CUDA Available:", torch.cuda.is_available())
-      print("CUDA Device Count:", torch.cuda.device_count())
-      print("CUDA Device Name:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "None")
       print(e)
       
 

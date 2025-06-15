@@ -6,7 +6,9 @@ from PyQt5.QtGui import QPixmap
 
 from models.yolo.yolov11 import YOLOv11
 from utils.image_processor import ImageProcessor
+from utils.camera_processor import CameraProcessor
 
+from pathlib import Path
 
 class Processor:
   def __init__(self, parent):
@@ -53,29 +55,45 @@ class Processor:
       self.parent.current_index = index
 
       QApplication.processEvents()
+      time.sleep(1)
 
     QMessageBox.information(self.parent, "Success", f"All {len(self.parent.pictures)} pictures have been processed and saved.")
 
   def process_from_camera(self):
-    if not self.parent.camera:
+    if not self.parent.camera_info:
       self.show_warning("Please select a camera.")
       return
-
+    if not self.parent.output_folder:
+      self.show_warning("Please select an output folder.")
+      return
+    if not self.parent.model:
+      self.show_warning("Please select a model.")
+      return
+    print("Camera : ", self.parent.camera_info)
     total_index = 0
     self.parent.current_index = 0
-    self.parent.input_folder = "C:/Users/ivano/Desktop/uni/uni/Semester_7/industry/affix_project/INPUT/"
+    self.parent.input_folder = os.getenv('INPUT_FOLDER')
 
-    while self.parent.current_index < 100:
+    self.camera = self.establish_communication(self.parent.camera_info)
+    
+    while self.parent.current_index < 9:
       flow_time_start = time.time()
-      input_path = os.path.join(self.parent.input_folder, f"image{self.parent.current_index}.png")
-      self.parent.connection.get_2d_image(self.parent.camera, input_path)
+      input_folder = Path(self.parent.input_folder)
+      #input_path = os.path.join(self.parent.input_folder, f"image{self.parent.current_index}.png")
+      self.take_image(self.parent.camera_info,self.camera)
+      images = [f for f in input_folder.iterdir() if f.is_file() and f.suffix.lower() in ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp']]
+      last_image = max(images, key=lambda f: f.stat().st_mtime)
 
-      image = cv2.imread(input_path)
+      input_path = str(last_image.resolve())
+      image = cv2.imread(last_image)
+
       if image is None:
         print("No Image")
         return
-
-      output_path = os.path.join(self.parent.output_folder, f"processed_{self.parent.current_index}.png")
+      
+      image_name = last_image.name
+      print(image_name)
+      output_path = os.path.join(self.parent.output_folder, f"processed_{image_name}.png")
       self.process_image(input_path, output_path)
 
       flow_time_end = time.time()
@@ -94,7 +112,7 @@ class Processor:
       self.parent.current_index += 1
       QApplication.processEvents()
 
-    self.parent.connection.disconnect(self.parent.camera)
+    #self.parent.connection.disconnect(self.parent.camera)
     self.parent.input_folders.append(self.parent.input_folder)
     self.parent.load_pictures()
     QMessageBox.information(self.parent, "Success", f"All {total_index} pictures have been processed and saved.")
@@ -107,5 +125,28 @@ class Processor:
         return ImageProcessor.segment_by_lightening(input_path, output_path)
       case "Segment by darkening":
         return ImageProcessor.segment_by_darkening(input_path, output_path)
+      case "Segment bin":
+        return ImageProcessor.segment_bin(input_path, output_path)
+      case "Just take the images":
+        return ImageProcessor.just_take_the_image(input_path, output_path)
+      case "Segment wooden":
+        return ImageProcessor.wooden_pallet(input_path, output_path)
+      case "Fast-SAM":
+        return ImageProcessor.fast_sam(input_path, output_path)
       case _:
         return ImageProcessor.convert_to_negative(input_path, output_path)
+
+  def establish_communication(self, camera_info):
+    cam_processor = CameraProcessor(input_path=self.parent.input_folder)
+    if "MechMind" in camera_info:
+      return cam_processor.mechmind_connect(camera_info)
+    if "Photoneo" in camera_info:
+      return cam_processor.photoneo_connect(camera_info)
+
+  def take_image(self, camera_info, camera):
+    cam_processor = CameraProcessor(input_path=self.parent.input_folder)
+    if "MechMind" in camera_info:
+      cam_processor.mechmind_capture(camera, 0)
+    if "Photoneo" in camera_info:
+      cam_processor.photoneo_capture(camera)
+      

@@ -4,14 +4,17 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtGui import QPixmap
 import json
 import os
-from models.yolo.yolov11 import YOLOv11
+#from models.yolo.yolov11 import YOLOv11
 from utils.select_folder import FolderSelector
-from utils.image_processor import ImageProcessor
+#from utils.image_processor import ImageProcessor
 from utils.image_fullscreen import FullScreenViewer
 from utils.select_model import ModelSelectionDialog
 from utils.select_camera import CameraSelector
-from utils.mechmind_connection import MechmindConnection
+#from utils.mechmind_connection import MechmindConnection
+from utils.configuration_manager import ConfigurationManager
 from utils.picture_processor import Processor
+#from utils.photoneo.photoneo_control import PhotoneoControl
+from utils.photoneo.photoneo_config_editor import open_photoneo_config
 
 import time
 import cv2
@@ -44,6 +47,7 @@ class GeneralWindow(QMainWindow):
     self.pictures = []
     self.current_index = -1
     self.output_folder = ""
+    self.output_folder_file_count = 0
     self.model = ""
     self.connection = None
     self.camera_info = ""
@@ -251,7 +255,8 @@ class GeneralWindow(QMainWindow):
         background-color: #166f7a;
       }
     """)
-    self.load_cfg_btn.clicked.connect(self.not_implemented)
+    self.load_cfg_btn.clicked.connect(self.load_configuration)
+    self.config_managers = []
 
     #Edit Configuration Button - NOT IMPLEMENTED
     self.edit_cfg_btn = QPushButton("Edit Configuration")
@@ -268,9 +273,11 @@ class GeneralWindow(QMainWindow):
       }
     """)
     self.edit_cfg_btn.clicked.connect(self.not_implemented)
+    
+    
 
     #Add the buttons to the layout and keep them "fancyyy"
-    for btn in [self.start_btn, self.stop_btn, self.save_cfg_btn, self.load_cfg_btn, self.edit_cfg_btn]:
+    for btn in [self.start_btn, self.stop_btn,  self.load_cfg_btn]:
       btn.setFixedSize(200, 50)
       button_layout.addWidget(btn)
 
@@ -478,29 +485,22 @@ class GeneralWindow(QMainWindow):
     self.setCentralWidget(central_widget)
 
   def open_camera_dialog(self):
-    try:
-      self.connection = MechmindConnection()
-      cameras = self.connection.find_cameras()
-
-    except Exception as e:
-      QMessageBox.critical(self, "Error", f"Failed to perform this operation: {e}")
-      return
     
-    if not cameras:
-      QMessageBox.warning(self, "No Cameras", "No cameras found.")
-      return
+    #if not cameras:
+    #  QMessageBox.warning(self, "No Cameras", "No cameras found.")
+    #  return
 
-    dialog = CameraSelector(cameras, self) 
+    dialog = CameraSelector(self) 
     selected_camera = None  
     if dialog.exec_() == QDialog.Accepted:
       selected_camera = dialog.get_selected_camera()
       QMessageBox.information(self, "Selected Camera", f"You selected: {selected_camera}")
       self.work_mode = 1
-      self.camera_label.setText(f"Camera: {selected_camera.model}")
+      self.camera_label.setText(f"Camera: {dialog.get_model()}")
 
     if selected_camera:
       self.camera_info = selected_camera
-      self.camera = self.connection.connect(self.camera_info)
+      #self.camera = self.connection.connect(self.camera_info)
     
 
   def open_model_dialog(self):
@@ -538,6 +538,8 @@ class GeneralWindow(QMainWindow):
     folder = QFileDialog.getExistingDirectory(self, "Select Output Folder")
     if folder:
       self.output_folder = folder
+      with os.scandir(self.output_folder) as entries:
+          self.output_folder_file_count = sum(1 for entry in entries if entry.is_file())
       self.output_folder_label.setText("Output:" + folder)
 
 
@@ -564,7 +566,7 @@ class GeneralWindow(QMainWindow):
         if file.lower().endswith((".png", ".jpg", ".jpeg")):
           self.pictures.append(os.path.join(folder, file))
     self.current_index = 0 if self.pictures else -1
-    self.max_index = len(self.pictures) - 1 if self.pictures else -1
+    self.max_index = len(self.pictures) - 1 if self.pictures else 0
     self.update_picture_boxes()
 
 
@@ -577,7 +579,7 @@ class GeneralWindow(QMainWindow):
         self.pic2.setPixmap(QPixmap(self.output_pics[self.current_index]).scaled(self.pic2.size(), aspectRatioMode=1))
       else:
         self.pic2.clear()
-      self.picture_status.setText(f"{self.current_index + 1} / {len(self.pictures)}")
+      self.picture_status.setText(f"{self.current_index + 1} / { len(self.pictures)}")
       if self.processing_times:
         self.picture_time.setText(f"{self.processing_times[self.current_index]:.2f} s")
     else:
@@ -606,7 +608,14 @@ class GeneralWindow(QMainWindow):
       self.current_index = 0
       self.update_picture_boxes()
 
-
+  def load_configuration(self):
+    print (self.camera_info)
+    manager = ConfigurationManager(self.camera_info)
+    self.config_managers.append(manager)
+    manager.load()
+    # Optional: connect window close signal to cleanup
+    if manager.config_window:
+      manager.config_window.destroyed.connect(lambda: self.config_managers.remove(manager))
 
   def handle_picture_click(self, event):
     #Show the full-screen viewer

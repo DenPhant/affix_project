@@ -41,6 +41,22 @@
       {
         "name": "Segment by darkening", 
         "description": "One of the traditional algorithm methods to segment objects. This approach uses Morphology and Thresholding that darkens the objects making them more recognisable."
+      },
+      {
+        "name": "Segment bin", 
+        "description": "For Bin case"
+      },
+      {
+        "name": "Just take the images",
+        "description": "No model, just take a picture"
+      },
+      {
+        "name": "Segment Wooden",
+        "description": "Under development"
+      },
+      {
+        "name": "Fast-SAM",
+        "description": "Fast-SAM is a lightweight and efficient image segmentation model that provides fast, promptable segmentation using points, boxes, or masks. It offers performance comparable to SAM but with significantly lower computational requirements, making it ideal for real-time and resource-constrained applications."
       }
     ],
     "input_folders": [],
