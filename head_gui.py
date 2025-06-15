@@ -4,7 +4,6 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtGui import QPixmap
 import json
 import os
-#from models.yolo.yolov11 import YOLOv11
 from utils.select_folder import FolderSelector
 #from utils.image_processor import ImageProcessor
 from utils.image_fullscreen import FullScreenViewer
