@@ -10,7 +10,6 @@ pytestmark = pytest.mark.skipif(
     reason="Mech-Eye SDK not installed; skipping SDK-dependent tests."
 )
 
-from utils.picture_processor import Processor
 
 @pytest.fixture
 def dummy_parent():
@@ -19,6 +18,7 @@ def dummy_parent():
     return parent
 
 def test_process_image_segment_by_lightening(dummy_parent, monkeypatch):
+    from utils.picture_processor import Processor
     processor = Processor(dummy_parent)
     input_path = "tests/resources/sample_input.png"
     output_path = "tests/resources/output.png"
