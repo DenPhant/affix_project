@@ -6,11 +6,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    env:
-      CI: true
-      QT_QPA_PLATFORM: offscreen
-      OPEN3D_DISABLE_CUDA: 1
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -21,14 +17,14 @@ jobs:
           python-version: '3.10'
 
       - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install -y libpcl-dev xvfb
+        run: sudo apt-get update && sudo apt-get install -y libpcl-dev
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt || pip install PyQt5 pytest
+          pip install -r requirements.txt || pip install PyQT5 pytest
 
-      - name: Run tests with xvfb
+      - name: Run tests
         run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)
-          xvfb-run -a pytest
+          pytest
