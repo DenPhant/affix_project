@@ -16,8 +16,6 @@ from utils.picture_processor import Processor
 #from utils.photoneo.photoneo_control import PhotoneoControl
 from utils.photoneo.photoneo_config_editor import open_photoneo_config
 
-import time
-import cv2
 #General UI, with more than 600 lines of code,
 #A lot of code went to just add widgets to layouts, styling them and saparation by empty lines
 #It can be confusing, especially with picture updating, 
