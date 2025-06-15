@@ -1,7 +1,14 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from PyQt5.QtWidgets import QApplication
-from utils.select_camera import CameraSelector
+import importlib
+mecheye_available = importlib.util.find_spec("mecheye") is not None
+
+pytestmark = pytest.mark.skipif(
+    not mecheye_available,
+    reason="Mech-Eye SDK not installed; skipping SDK-dependent tests."
+)
+
 
 @pytest.fixture(scope="session")
 def app():
@@ -10,6 +17,7 @@ def app():
 @patch("utils.select_camera.MechmindConnection")
 @patch("utils.select_camera.PhotoneoToolControl")
 def test_user_select_camera(mock_photoneo, mock_mechmind, app):
+  from utils.select_camera import CameraSelector
   mechmind_mock = MagicMock()
   mechmind_mock.model = "MM100"
   mechmind_mock.serial_number = "001"
