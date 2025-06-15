@@ -8,7 +8,6 @@ from utils.image_processor import ImageProcessor
 
 @pytest.fixture
 def dummy_image(tmp_path):
-  # Create a simple black dummy image for testing
   img = np.zeros((1200, 1600, 3), dtype=np.uint8)
   input_path = tmp_path / "input.png"
   output_path = tmp_path / "output.png"

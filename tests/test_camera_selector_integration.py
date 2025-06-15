@@ -19,7 +19,6 @@ def test_user_select_camera(mock_photoneo, mock_mechmind, app):
 
   selector = CameraSelector()
 
-  # Simulate user clicking first item
   selector.list_widget.setCurrentRow(0)
   selector.on_confirm()
 

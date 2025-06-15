@@ -13,7 +13,6 @@ def test_process_image_segment_by_lightening(dummy_parent, monkeypatch):
     input_path = "tests/resources/sample_input.png"
     output_path = "tests/resources/output.png"
 
-    # Mock ImageProcessor
     from utils.image_processor import ImageProcessor
     monkeypatch.setattr(ImageProcessor, "segment_by_lightening", lambda inp, out: 0.123)
 

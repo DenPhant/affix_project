@@ -28,7 +28,6 @@ def test_select_input_folders_with_no_image_files(mock_dialog, tmp_path):
     selected = fs.select_input_folders(parent=None)
 
     assert selected == f"{folder}"
-    # Since no images, folder should NOT be added
     assert fs.input_folders == []
 
 @patch("utils.select_folder.QFileDialog.getExistingDirectory")
@@ -46,16 +45,13 @@ def test_save_and_load_config(tmp_path):
     config_file = tmp_path / "config.json"
     fs = FolderSelector(config_file=str(config_file))
 
-    # Set some folders
     fs.input_folders = ["input1", "input2"]
     fs.output_folder = "output_folder"
 
     fs.save_to_config()
 
-    # File should exist
     assert config_file.exists()
 
-    # Load in new instance
     fs2 = FolderSelector(config_file=str(config_file))
     fs2.load_from_config()
 
@@ -65,7 +61,6 @@ def test_save_and_load_config(tmp_path):
 def test_load_from_config_file_missing(tmp_path):
     config_file = tmp_path / "missing_config.json"
     fs = FolderSelector(config_file=str(config_file))
-    # Should not raise even if file does not exist
     fs.load_from_config()
     assert fs.input_folders == []
     assert fs.output_folder == ""
