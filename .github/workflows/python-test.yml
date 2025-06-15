@@ -6,6 +6,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      CI: true
+      OPEN3D_DISABLE_CUDA: 1
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
