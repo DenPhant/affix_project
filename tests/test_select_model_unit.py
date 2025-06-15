@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication
 from utils.select_model import ModelSelectionDialog
 import os
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def app():
     os.environ["QT_QPA_PLATFORM"] = "offscreen"
     return QApplication([])
