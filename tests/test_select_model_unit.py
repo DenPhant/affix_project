@@ -2,9 +2,11 @@ import pytest
 from unittest.mock import patch
 from PyQt5.QtWidgets import QApplication
 from utils.select_model import ModelSelectionDialog
+import os
 
 @pytest.fixture(scope="module")
 def app():
+    os.environ["QT_QPA_PLATFORM"] = "offscreen"
     return QApplication([])
 
 def test_initial_population(app):
