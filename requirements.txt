@@ -6,4 +6,4 @@ scipy>=1.5.0
 pytest
 ultralytics
 dotenv
-pip install git+https://github.com/CASIA-IVA-Lab/FastSAM.git
+git+https://github.com/CASIA-IVA-Lab/FastSAM.git
