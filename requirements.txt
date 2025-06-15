@@ -9,3 +9,4 @@ dotenv
 git+https://github.com/CASIA-IVA-Lab/FastSAM.git
 harvesters
 open3d
+MechEyeAPI
