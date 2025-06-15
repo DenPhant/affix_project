@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from PyQt5.QtWidgets import QApplication
+import os
 import importlib
 mecheye_available = importlib.util.find_spec("mecheye") is not None
 
@@ -12,6 +13,7 @@ pytestmark = pytest.mark.skipif(
 
 @pytest.fixture(scope="session")
 def app():
+  os.environ["QT_QPA_PLATFORM"] = "offscreen"
   return QApplication([])
 
 @patch("utils.select_camera.MechmindConnection")
