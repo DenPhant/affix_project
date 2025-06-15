@@ -1,5 +1,15 @@
 import pytest
 from unittest.mock import MagicMock
+import importlib
+
+# Detect if Mech-Eye SDK is available
+mecheye_available = importlib.util.find_spec("mecheye") is not None
+
+pytestmark = pytest.mark.skipif(
+    not mecheye_available,
+    reason="Mech-Eye SDK not installed; skipping SDK-dependent tests."
+)
+
 from utils.picture_processor import Processor
 
 @pytest.fixture
