@@ -1,0 +1,12 @@
+PyQt5>=5.15.0
+opencv-python>=4.5.0
+numpy>=1.19.0
+scikit-image>=0.18.0
+scipy>=1.5.0
+pytest
+ultralytics==8.0.20
+dotenv
+git+https://github.com/CASIA-IVA-Lab/FastSAM.git
+harvesters
+open3d
+MechEyeAPI

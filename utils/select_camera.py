@@ -11,8 +11,11 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt
 
+from utils.mechmind.mechmind_connection import MechmindConnection
+from utils.photoneo.photoneo_tools import PhotoneoToolControl
+
 class CameraSelector(QDialog):
-  def __init__(self, cameras, parent=None):
+  def __init__(self, parent=None):
     super().__init__(parent)
     self.setWindowTitle("Select Camera")
     self.setStyleSheet(
@@ -59,7 +62,18 @@ class CameraSelector(QDialog):
         """
     )
 
-    self.cameras = cameras
+    self.cameras = []
+    self.mechmind_connection = MechmindConnection()
+    mechmind_cameras = self.mechmind_connection.find_cameras()
+    if(any(mechmind_cameras)):
+      for cam in mechmind_cameras:
+        item = f"{cam.model} - {cam.serial_number} - {cam.ip_address} - MechMind"
+        self.cameras.append(item)
+    self.photoneo_connection = PhotoneoToolControl()
+    photoneo_cameras = self.photoneo_connection.list_cameras()
+    if(any(photoneo_cameras)):
+      for cam in photoneo_cameras:
+        self.cameras.append(cam)
     self.selected_camera = None
 
     self.init_ui()
@@ -74,7 +88,7 @@ class CameraSelector(QDialog):
     # List widget to display cameras
     self.list_widget = QListWidget(self)
     for camera in self.cameras:
-        item = QListWidgetItem(f"{camera.model} - {camera.serial_number} - {camera.ip_address}")
+        item = QListWidgetItem(camera)
         item.setData(Qt.UserRole, camera)  # Store the camera data in the item
         self.list_widget.addItem(item)
     layout.addWidget(self.list_widget)
@@ -100,3 +114,6 @@ class CameraSelector(QDialog):
 
   def get_selected_camera(self):
     return self.selected_camera
+  
+  def get_model(self):
+    return self.selected_camera.split(" - ")[0]
