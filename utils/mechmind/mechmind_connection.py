@@ -31,7 +31,7 @@ class MechmindConnection:
       return "PROFILE ROI (ROI of lazer profiler)"
     else:
       return "UNKNOWN"
-    
+  
   def find_cameras(self):
     camera = Camera()
     #List of CameraInfo objects
@@ -42,15 +42,15 @@ class MechmindConnection:
   
   def connect(self, camera_info):
     camera = Camera()
+    #camera_info[0] - Camera Name
+    #camera_info[1] - Camera Serial Number
+    #camera_info[2] - Camera IP Address
+    #camera_info[3] - Camera Brand
     #List of CameraInfo objects
-    info_list = camera.discover_cameras()
-    if len(info_list) == 0:
-      print("No cameras found") 
-    for info in info_list:
-       print("Camera found: ", info)
+    
     try:
-      camera.connect(camera_info.ip_address)
-      print("Successfyully connected to the camera ",camera_info.model)
+      camera.connect(camera_info[2])
+      print("Successfyully connected to the camera ",camera_info[0])
       return camera
     except:
       print("Failed to connect to the camera")
@@ -67,7 +67,6 @@ class MechmindConnection:
         return
       
       #Save the image
-      #print(color.data())
       try:
         cv2.imwrite(file_name, color.data())
       except:

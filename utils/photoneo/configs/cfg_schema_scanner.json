@@ -1,0 +1,399 @@
+{
+  "General": {
+    "trigger_mode": {
+      "type": "enum",
+      "options": [
+        "Software",
+        "Freerun"
+      ]
+    },
+    "wait_for_grabbing_end": {
+      "type": "bool"
+    },
+    "get_frame_timeout": {
+      "type": "int",
+      "min": -1,
+      "max": 9223372036854776000
+    },
+    "logout_after_disconnect": {
+      "type": "bool"
+    },
+    "stop_acquisition_after_disconnect": {
+      "type": "bool"
+    }
+  },
+  "Capturing": {
+    "shutter_multiplier": {
+      "type": "int",
+      "min": 1,
+      "max": 20
+    },
+    "scan_multiplier": {
+      "type": "int",
+      "min": 1,
+      "max": 20
+    },
+    "resolution": {
+      "type": "enum",
+      "values": [
+        "Res_2064_1544",
+        "Res_1032_772"
+      ]
+    },
+    "camera_only_mode": {
+      "type": "bool"
+    },
+    "ambient_light_suppression": {
+      "type": "bool"
+    },
+    "coding_strategy": {
+      "type": "enum",
+      "values": [
+        "Normal",
+        "Interreflections",
+        "HighFrequency"
+      ]
+    },
+    "coding_quality": {
+      "type": "enum",
+      "values": [
+        "Fast",
+        "High",
+        "Ultra"
+      ]
+    },
+    "texture_source": {
+      "type": "enum",
+      "values": [
+        "Computed",
+        "LED",
+        "Laser",
+        "Focus"
+      ]
+    },
+    "single_pattern_exposure": {
+      "type": "float",
+      "min": 10.24,
+      "max": 100.352
+    },
+    "maximum_fps": {
+      "type": "float",
+      "min": 0.0,
+      "max": 100.0
+    },
+    "laser_power": {
+      "type": "int",
+      "min": 1,
+      "max": 4095
+    },
+    "projection_offset_left": {
+      "type": "int",
+      "min": 0,
+      "max": 512
+    },
+    "projection_offset_right": {
+      "type": "int",
+      "min": 0,
+      "max": 512
+    },
+    "led_power": {
+      "type": "int",
+      "min": 1,
+      "max": 4095
+    },
+    "hardware_trigger": {
+      "type": "bool"
+    },
+    "hardware_trigger_signal": {
+      "type": "enum",
+      "values": [
+        "Falling",
+        "Rising",
+        "Both"
+      ]
+    }
+  },
+  "Processing": {
+    "max_inaccuracy": {
+      "type": "float",
+      "min": 0.0,
+      "max": 100.0
+    },
+    "camera_space_selector": {
+      "type": "enum",
+      "values": [
+        "MinX",
+        "MinY",
+        "MinZ",
+        "MaxX",
+        "MaxY",
+        "MaxZ"
+      ]
+    },
+    "camera_space_value": {
+      "type": "float",
+      "min": -999999.0,
+      "max": 999999.0
+    },
+    "point_cloud_space_selector": {
+      "type": "enum",
+      "values": [
+        "MinX",
+        "MinY",
+        "MinZ",
+        "MaxX",
+        "MaxY",
+        "MaxZ"
+      ]
+    },
+    "point_cloud_space_value": {
+      "type": "float",
+      "min": -999999.0,
+      "max": 999999.0
+    },
+    "max_camera_angle": {
+      "type": "float",
+      "min": 0.0,
+      "max": 90.0
+    },
+    "max_projector_angle": {
+      "type": "float",
+      "min": 0.0,
+      "max": 90.0
+    },
+    "min_halfway_angle": {
+      "type": "float",
+      "min": 0.0,
+      "max": 90.0
+    },
+    "max_halfway_angle": {
+      "type": "float",
+      "min": 0.0,
+      "max": 90.0
+    },
+    "calibration_volume_only": {
+      "type": "bool"
+    },
+    "surface_smoothness": {
+      "type": "enum",
+      "values": [
+        "Sharp",
+        "Normal",
+        "Smooth"
+      ]
+    },
+    "normals_estimation_radius": {
+      "type": "int",
+      "min": 0,
+      "max": 4
+    },
+    "interreflections_filtering": {
+      "type": "bool"
+    },
+    "interreflection_filter_strength": {
+      "type": "float",
+      "min": 0.01,
+      "max": 0.99
+    },
+    "pattern_decomposition_reach": {
+      "type": "enum",
+      "values": [
+        "Local",
+        "Small",
+        "Medium",
+        "Large"
+      ]
+    },
+    "signal_contrast_threshold": {
+      "type": "float",
+      "min": 0.0,
+      "max": 4095.0
+    },
+    "pattern_code_correction": {
+      "type": "enum",
+      "values": [
+        "Off",
+        "Medium",
+        "Strong"
+      ]
+    },
+    "glare_compensation": {
+      "type": "bool"
+    },
+    "hole_filling": {
+      "type": "enum",
+      "values": [
+        "Off",
+        "Medium"
+      ]
+    }
+  },
+  "Coordinates": {
+    "coordinate_space": {
+      "type": "enum",
+      "values": [
+        "CameraSpace",
+        "MarkerSpace",
+        "RobotSpace",
+        "CustomSpace",
+        "PrimaryCameraSpace"
+      ]
+    },
+    "transformation_space_selector": {
+      "type": "enum",
+      "values": [
+        "Custom",
+        "Robot"
+      ]
+    },
+    "transformation_rotation_matrix_selector": {
+      "type": "enum",
+      "values": [
+        "Row0Col0",
+        "Row0Col1",
+        "Row0Col2",
+        "Row1Col0",
+        "Row1Col1",
+        "Row1Col2",
+        "Row2Col0",
+        "Row2Col1",
+        "Row2Col2"
+      ]
+    },
+    "transformation_rotation_matrix_value": {
+      "type": "float",
+      "min": -999999.0,
+      "max": 999999.0
+    },
+    "transformation_translation_vector_selector": {
+      "type": "enum",
+      "values": [
+        "X",
+        "Y",
+        "Z"
+      ]
+    },
+    "transformation_translation_vector_value": {
+      "type": "float",
+      "min": -999999.0,
+      "max": 999999.0
+    },
+    "recognize_markers": {
+      "type": "bool"
+    },
+    "marker_scale_width": {
+      "type": "float",
+      "min": -999999.0,
+      "max": 999999.0
+    },
+    "marker_scale_height": {
+      "type": "float",
+      "min": -999999.0,
+      "max": 999999.0
+    },
+    "save_transformations": {
+      "type": "bool"
+    },
+    "camera_space": {
+      "type": "enum",
+      "values": [
+        "PrimaryCamera",
+        "ColorCamera"
+      ]
+    },
+    "current_camera_projection_mode": {
+      "type": "enum",
+      "values": [
+        "Perspective"
+      ]
+    },
+    "current_camera_perspective_camera_matrix_selector": {
+      "type": "enum",
+      "values": [
+        "Row0Col0",
+        "Row0Col1",
+        "Row0Col2",
+        "Row1Col0",
+        "Row1Col1",
+        "Row1Col2",
+        "Row2Col0",
+        "Row2Col1",
+        "Row2Col2"
+      ]
+    },
+    "current_camera_perspective_distortion_coefficient_selector": {
+      "type": "int",
+      "min": 0,
+      "max": 11
+    },
+    "current_camera_worldtocamera_rotation_matrix_selector": {
+      "type": "enum",
+      "values": [
+        "Row0Col0",
+        "Row0Col1",
+        "Row0Col2",
+        "Row1Col0",
+        "Row1Col1",
+        "Row1Col2",
+        "Row2Col0",
+        "Row2Col1",
+        "Row2Col2"
+      ]
+    },
+    "current_camera_worldtocamera_translation_vector_selector": {
+      "type": "enum",
+      "values": [
+        "X",
+        "Y",
+        "Z"
+      ]
+    }
+  },
+  "Calibration": {
+    "camera_matrix_selector": {
+      "type": "enum",
+      "values": [
+        "Row0Col0",
+        "Row0Col1",
+        "Row0Col2",
+        "Row1Col0",
+        "Row1Col1",
+        "Row1Col2",
+        "Row2Col0",
+        "Row2Col1",
+        "Row2Col2"
+      ]
+    },
+    "distortion_coefficient_selector": {
+      "type": "int",
+      "min": 0,
+      "max": 13
+    },
+    "focus_length": {
+      "type": "float"
+    },
+    "pixel_size_width": {
+      "type": "float"
+    },
+    "pixel_size_height": {
+      "type": "float"
+    }
+  },
+  "FrameOutput": {
+    "send_point_cloud": {
+      "type": "bool"
+    },
+    "send_normal_map": {
+      "type": "bool"
+    },
+    "send_depth_map": {
+      "type": "bool"
+    },
+    "send_confidence_map": {
+      "type": "bool"
+    },
+    "send_texture": {
+      "type": "bool"
+    }
+  }
+}

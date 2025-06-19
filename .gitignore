@@ -4,6 +4,10 @@ models/yolo/runs
 INPUT
 OUTPUT
 DEMO
+VALIDATION
+TEMP
+utils/models/fast_sam/*
+!utils/models/fast_sam/FastSAM.py
 
 #Default built in files to ignore
 # Byte-compiled / optimized / DLL files

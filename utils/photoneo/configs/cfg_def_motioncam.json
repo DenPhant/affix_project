@@ -1,0 +1,78 @@
+{
+  "General": {
+    "trigger_mode": "Freerun",
+    "wait_for_grabbing_end": false,
+    "get_frame_timeout": 5000,
+    "logout_after_disconnect": false,
+    "stop_acquisition_after_disconnect": false
+  },
+  "Capturing": {
+    "shutter_multiplier": 5,
+    "scan_multiplier": 5,
+    "coding_strategy": "Normal",
+    "coding_quality": "Ultra",
+    "texture_source": "Laser",
+    "single_pattern_exposure": 10.24,
+    "maximum_fps": 25,
+    "laser_power": 2000,
+    "led_power": 2000,
+    "hardware_trigger": true,
+    "hardware_trigger_signal": "Both",
+    "operation_mode": "ScannerMode"
+  },
+  "Processing": {
+    "max_inaccuracy": 3.5,
+    "camera_space_selector": "MinZ",
+    "camera_space_value": 100.5,
+    "point_cloud_space_selector": "MaxY",
+    "point_cloud_space_value": 200.5,
+    "max_camera_angle": 10.0,
+    "max_projector_angle": 15.0,
+    "min_halfway_angle": 20.0,
+    "max_halfway_angle": 25.0,
+    "calibration_volume_only": true,
+    "surface_smoothness": "Normal",
+    "normals_estimation_radius": 1,
+    "pattern_code_correction": "Medium",
+    "glare_compensation": true,
+    "hole_filling": "Medium"
+  },
+  "Coordinates": {
+    "coordinate_space": "MarkerSpace",
+    "transformation_space_selector": "Robot",
+    "transformation_rotation_matrix_selector": "Row0Col1",
+    "transformation_rotation_matrix_value": 150.25,
+    "transformation_translation_vector_selector": "Z",
+    "transformation_translation_vector_value": 225.50,
+    "recognize_markers": true,
+    "marker_scale_width": 0.50,
+    "marker_scale_height": 0.50,
+    "save_transformations": true,
+    "camera_space": "PrimaryCamera"
+  },
+  "Camera": {
+    "camera_exposure": 10.24,
+    "sampling_topology": "Standard",
+    "output_topology": "Raw",
+    "camera_coding_strategy": "Interreflections",
+    "camera_texture_source": "Laser"
+  },
+  "FrameOutput": {
+    "send_point_cloud": true,
+    "send_normal_map": true,
+    "send_depth_map": true,
+    "send_confidence_map": true,
+    "send_event_map": true,
+    "send_texture": true,
+    "send_color_camera_image": true
+  },
+  "ColorSettings": {
+    "resolution": "Res_1932_1096",
+    "gamma": 1.0,
+    "white_balance_enabled": true,
+    "white_balance_r": 1.0,
+    "white_balance_g": 1.0,
+    "white_balance_b": 1.0,
+    "remove_false_colors": true
+  }
+}
