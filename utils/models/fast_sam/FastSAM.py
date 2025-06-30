@@ -5,10 +5,12 @@ import numpy as np
 import time
 from fastsam import FastSAM
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 class FastSAMSegmenter:
   model = None
-
+  load_dotenv()
   def __init__(self, input_path, output_path, checkpoint_path=os.getenv('FASTSAM_CHECKPOINT'), model_path=os.getenv('FASTSAM_MODEL_PATH')):
     self.input_path = input_path
     self.output_path = output_path
