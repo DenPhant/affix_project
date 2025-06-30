@@ -4,8 +4,9 @@ The current verion is a prototype version, incomplete and not secure.
 
 ## Recommendation:
 + Python version 11 (With verion 12+, the YOLO Deep Learning model can cause errors)
-+ Keep the file structure as follows:
-  ![GUI_file_structure](https://github.com/user-attachments/assets/c4867013-5cd0-408b-bf4e-e61dbbb17cae)
++ Keep the structure as close as possible to this:
+  ![C4](https://github.com/user-attachments/assets/a0d91296-acaa-428f-8ecc-61149b8e3e2f)
+
 
 ## Good to know:
 + This is a prototype, so not bugs will be 100%
