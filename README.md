@@ -9,7 +9,7 @@ The current verion is a prototype version, incomplete and not secure.
 
 
 ## Good to know:
-+ This is a prototype, so not bugs will be 100%
++ This is a prototype, so bugs will be 100%
 + When Adding a new model, you need to add it in 2 places:
   1. config.jsom
   2. Processor in start_processing() method
