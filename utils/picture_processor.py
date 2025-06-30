@@ -9,8 +9,10 @@ from utils.image_processor import ImageProcessor
 from utils.camera_processor import CameraProcessor
 
 from pathlib import Path
+from dotenv import load_dotenv
 
 class Processor:
+  load_dotenv()
   def __init__(self, parent):
     self.parent = parent
 
@@ -40,7 +42,8 @@ class Processor:
       return
 
     for index, original_path in enumerate(self.parent.pictures):
-      output_path = os.path.join(self.parent.output_folder, f"processed_{index}.png")
+      filename = os.path.splitext(os.path.basename(original_path))[0]
+      output_path = os.path.join(self.parent.output_folder, f"processed_{filename}.png")
       proc_time = self.process_image(original_path, output_path)
 
       self.parent.processing_times.insert(self.parent.current_index, proc_time)
@@ -72,7 +75,7 @@ class Processor:
     print("Camera : ", self.parent.camera_info)
     total_index = 0
     self.parent.current_index = 0
-    self.parent.input_folder = os.getenv('INPUT_FOLDER')
+    self.parent.input_folder = os.getenv('INPUT_FOLDER_PATH')
 
     self.camera = self.establish_communication(self.parent.camera_info)
     
