@@ -6,12 +6,6 @@ OUTPUT
 DEMO
 VALIDATION
 TEMP
-tests
-!tests/test_folder_selector_unit.py
-!tests/test_image_processor_integration.py
-!tests/test_image_processor_performance.py
-!tests/test_image_processor_unit.py
-!tests/resources
 utils/models/fast_sam/*
 !utils/models/fast_sam/FastSAM.py
 
