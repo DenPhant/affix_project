@@ -1,0 +1,1 @@
+#Requires MechMind SDK and Photoneo SDK, paste from txt_tests, remove before pushing to the pipelines
